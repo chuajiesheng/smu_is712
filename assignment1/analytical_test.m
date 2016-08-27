@@ -1,7 +1,6 @@
 function loss = analytical_test(X, Y, weights, bias)
 
-    weights = ((X.' * X) \ X.') * Y; 
-    predict = (X * weights) - Y + bias
+    predict = (X * weights + bias)
 	loss    = sum((predict - Y).^2)
 
 end
