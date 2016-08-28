@@ -1,5 +1,6 @@
 function loss = linearR_predict(X, Y, weights, bias)
 
-	loss = ;
+	predict = X * weights + bias;
+    loss = mean2((predict - Y).^2 / 2);
 
 end

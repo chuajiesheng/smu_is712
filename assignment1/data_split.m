@@ -5,12 +5,9 @@ function [X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data)
 	
 	feature_size = size(data, 2) - 1;
 	X = data_shuffle(:, 1:feature_size);
-
   	X = feature_norm(X);
-
 	Y = data_shuffle(:, feature_size + 1);
 
-	
 	train_size = floor(data_size / 10) * 7;
 	val_size = floor(data_size / 10);
 	test_size = data_size - train_size - val_size;

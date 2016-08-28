@@ -45,9 +45,9 @@ function main(file, model_name)
         iterations = 1000;
         for i = 1:1:iterations
             %Training		 
-            [loss_train, weights, bias] = linearR_train(X_train, Y_train, weights, bias);
+            [loss_train, weights, bias] = linearR_train(i, X_train, Y_train, weights, bias);
             if i <= 10
-                printf('Iteration %d loss: %f\n', i, loss_train);
+                fprintf('Iteration %d loss: %f\n', i, loss_train);
             end
             %Evauate on validation data set
             loss_val = linearR_predict(X_val, Y_val, weights, bias);
