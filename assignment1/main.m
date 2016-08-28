@@ -45,6 +45,7 @@ function main(file, model_name)
 
     elseif strcmp(model_name, 'iterative')
         iterations = 1000;
+        loss = zeros(iterations, 1);
         for i = 1:1:iterations
             %Training		 
             [loss_train, weights, bias] = linearR_train(i, X_train, Y_train, weights, bias);
@@ -53,6 +54,9 @@ function main(file, model_name)
             end
             %Evauate on validation data set
             loss_val = linearR_predict(X_val, Y_val, weights, bias);
+            loss(i) = loss_val;
+            
+            plot(loss)
         end
         %Evaluate on testing data set
         loss_test = linearR_predict(X_test, Y_test, weights, bias);
