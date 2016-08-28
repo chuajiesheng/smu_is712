@@ -48,7 +48,7 @@ function main(file, model_name)
         for i = 1:1:iterations
             %Training		 
             [loss_train, weights, bias] = linearR_train(i, X_train, Y_train, weights, bias);
-            if i <= 10 || (iterations - i) <= 10
+            if i <= 10
                 fprintf('Iteration %d loss: %f\n', i, loss_train);
             end
             %Evauate on validation data set
