@@ -31,7 +31,9 @@ function main(file, model_name)
     weights = randn(feature_size, 1) * 0.5;
     bias = randn(1);
 
-
+    %Plot the training data
+    plot(X_train, Y_train, 'o', 'MarkerFacecolor', 'r', 'MarkerSize', 8);
+    
     if strcmp(model_name, 'analytical')
         %Training
         [loss_train, weights, bias] = analytical_train(X_train, Y_train, weights, bias);
@@ -46,7 +48,7 @@ function main(file, model_name)
         for i = 1:1:iterations
             %Training		 
             [loss_train, weights, bias] = linearR_train(i, X_train, Y_train, weights, bias);
-            if i <= 10
+            if (iterations - i) <= 10
                 fprintf('Iteration %d loss: %f\n', i, loss_train);
             end
             %Evauate on validation data set
