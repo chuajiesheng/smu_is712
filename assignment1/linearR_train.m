@@ -1,4 +1,4 @@
-function [loss, weights, bias] = linearR_train(i, X, Y, weights, bias)
+function [loss, weights, bias] = linearR_train(i, X, Y, weights, ~)
     [~, n] = size(X);
 
     alpha = 1.0;
@@ -11,7 +11,7 @@ function [loss, weights, bias] = linearR_train(i, X, Y, weights, bias)
         weights(j) = alpha_i * gradient;
     end
     
-    bias = mean2(Y + X * weights);
+    bias = mean2(Y - X * weights);
     predict = X * weights + bias;
     loss = mean2((predict - Y).^2 / 2);
 end
