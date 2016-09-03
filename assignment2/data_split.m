@@ -1,6 +1,6 @@
 function [X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data_name)
-	if strcmp(data_name, "heart")
-		data = importdata("../data/heart.dat");
+	if strcmp(data_name, 'heart')
+		data = importdata('../data/heart.dat');
 		data(:, end) =  2 .* ( data(:, end) == 2 ) - 1;
 		data_size = size(data, 1);
 		idx_shuffle = randperm( data_size );
@@ -28,16 +28,16 @@ function [X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data_name
 
 		X_test  = X(train_size+val_size+1:end, :);
 		Y_test  = Y(train_size+val_size+1:end, :);
-	elseif strcmp(data_name, "gisette")
-		X_train = importdata("../data/gisette_train.data");
+	elseif strcmp(data_name, 'gisette')
+		X_train = importdata('../data/gisette_train.data');
 		X_train = [ones(size(X_train,1),1), X_train];
 		X_train = X_train / 1000;
-		Y_train = importdata("../data/gisette_train.labels");
+		Y_train = importdata('../data/gisette_train.labels');
 		
-		X = importdata("../data/gisette_valid.data");
+		X = importdata('../data/gisette_valid.data');
 		X = [ones(size(X,1),1), X];
 		X = X / 1000;
-		Y = importdata("../data/gisette_valid.labels");
+		Y = importdata('../data/gisette_valid.labels');
 		
 		val_num = floor(size(X,1)/2);
 		X_val = X(1:val_num, :);

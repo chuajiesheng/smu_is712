@@ -14,8 +14,7 @@
 function main(data_name, model_name) 
     %data_name: Loading data - previously arg_list{1}
     %model_name: Identify the model name - previously arg_list{2}
-
-
+    
     %Split the data into training, validation and test data sets, X is feature, Y is label
     %Some data may need normalization on the features
     [X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data_name);
