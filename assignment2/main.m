@@ -40,7 +40,7 @@ function main(data_name, model_name)
             %Training		 
             [loss_train, weights] = logisticR_train(i, X_train, Y_train, weights);		
             if i <= 10
-                printf('Iteration %d loss: %f\n', i, loss_train);
+                fprintf('Iteration %d loss: %f\n', i, loss_train);
             end
             %Evauate on validation data set
             accuracy_val = logisticR_predict(X_val, Y_val, weights);
@@ -48,12 +48,12 @@ function main(data_name, model_name)
         %Evaluate on testing data set
         accuracy_test = logisticR_predict(X_test, Y_test, weights);
     else
-        printf('Training model should be provided !!!!! \n')
+        fprintf('Training model should be provided !!!!! \n')
         return
     end
 
 
-    printf('Final loss for training data: %f\n', loss_train);
-    printf('Final accuracy for validation data: %f\n', accuracy_val);
-    printf('Final accuracy for test data: %f\n', accuracy_test);
+    fprintf('Final loss for training data: %f\n', loss_train);
+    fprintf('Final accuracy for validation data: %f\n', accuracy_val);
+    fprintf('Final accuracy for test data: %f\n', accuracy_test);
 end
