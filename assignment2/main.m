@@ -38,7 +38,7 @@ function main(data_name, model_name)
         iterations = 100;
         for i = 1:1:iterations
             %Training		 
-            [loss_train, weights] = logisticR_train(X_train, Y_train, weights);		
+            [loss_train, weights] = logisticR_train(i, X_train, Y_train, weights);		
             if i <= 10
                 printf('Iteration %d loss: %f\n', i, loss_train);
             end
