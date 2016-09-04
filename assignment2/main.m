@@ -11,49 +11,48 @@
 %The function "data_split" is provided as an example. You can rewrite it.
 %
 %
-function main(data_name, model_name) 
-    %data_name: Loading data - previously arg_list{1}
-    %model_name: Identify the model name - previously arg_list{2}
-    
-    %Split the data into training, validation and test data sets, X is feature, Y is label
-    %Some data may need normalization on the features
-    [X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data_name);
+%Command line parameters
+arg_list = argv ();
+%Loading data
+data_name = arg_list{1};
+%Identify the model name
+model_name = arg_list{2};
 
-    %Weight initialization
-    feature_size = size(X_train, 2);         %The first feature equals 1 for all instances.
-    weights = randn(feature_size, 1) * 0.05; %Bias is integrated in weights. 
-    %bias = randn(1);
+%Split the data into training, validation and test data sets, X is feature, Y is label
+%Some data may need normalization on the features
+[X_train, Y_train, X_val, Y_val, X_test, Y_test] = data_split(data_name);
 
+%Weight initialization
+feature_size = size(X_train, 2);         %The first feature equals 1 for all instances.
+weights = randn(feature_size, 1) * 0.05; %Bias is integrated in weights. 
+%bias = randn(1);
 
-    if strcmp(model_name, 'fminunc')
-        %Training
-        [loss_train, weights] = fminunc_train(X_train, Y_train, weights);
+if strcmp(model_name, 'fminunc')
+    %Training
+    [loss_train, weights] = fminunc_train(X_train, Y_train, weights);
+    %Evauate on validation data set
+    accuracy_val = logisticR_predict(X_val, Y_val, weights);
+    %Evaluate on testing data set
+    accuracy_test = logisticR_predict(X_test, Y_test, weights);
+
+elseif strcmp(model_name, 'batch')
+    iterations = 100;
+    for i = 1:1:iterations
+        %Training		 
+        [loss_train, weights] = logisticR_train(i, X_train, Y_train, weights);		
+        if i <= 10
+            fprintf('Iteration %d loss: %f\n', i, loss_train);
+        end
         %Evauate on validation data set
         accuracy_val = logisticR_predict(X_val, Y_val, weights);
-        %Evaluate on testing data set
-        accuracy_test = logisticR_predict(X_test, Y_test, weights);
-
-
-    elseif strcmp(model_name, 'batch')
-        iterations = 100;
-        for i = 1:1:iterations
-            %Training		 
-            [loss_train, weights] = logisticR_train(i, X_train, Y_train, weights);		
-            if i <= 10
-                fprintf('Iteration %d loss: %f\n', i, loss_train);
-            end
-            %Evauate on validation data set
-            accuracy_val = logisticR_predict(X_val, Y_val, weights);
-        end
-        %Evaluate on testing data set
-        accuracy_test = logisticR_predict(X_test, Y_test, weights);
-    else
-        fprintf('Training model should be provided !!!!! \n')
-        return
     end
-
-
-    fprintf('Final loss for training data: %f\n', loss_train);
-    fprintf('Final accuracy for validation data: %f\n', accuracy_val);
-    fprintf('Final accuracy for test data: %f\n', accuracy_test);
+    %Evaluate on testing data set
+    accuracy_test = logisticR_predict(X_test, Y_test, weights);
+else
+    fprintf('Training model should be provided !!!!! \n')
+    return
 end
+
+fprintf('Final loss for training data: %f\n', loss_train);
+fprintf('Final accuracy for validation data: %f\n', accuracy_val);
+fprintf('Final accuracy for test data: %f\n', accuracy_test);
