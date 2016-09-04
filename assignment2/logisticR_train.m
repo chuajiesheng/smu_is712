@@ -5,9 +5,9 @@ function [loss, weights] = logisticR_train(t, X, Y, weights)
     
     temp = zeros(nFeature, 1);
     for i = 1:nSamples
-        temp = temp + (sigmoid(X(i,:) * weights) - Y(i)) * X(i,:)';
-        weights = weights - n * temp;
+        temp = temp + X(i,:)' * (Y(i) - sigmoid(X(i,:) * weights));
+        weights = weights + n * temp;
     end
     
-    loss = 1 - logisticR_predict(X, Y, weights);
+    loss = logisticR_predict(X, Y, weights);
 end
