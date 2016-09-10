@@ -78,36 +78,51 @@ def model_test(X_test, Y_test, svr):
 	return accuracy
 
 #Your code here
-def model_train(X_train, Y_train, model_name):
-	
-	if model_name == 'svm_kernel':
-		svr = 	
+def model_train(X_train, Y_train, model_name, sparse_bool):
 
-	elif model_name == 'svm_linear':
-		svr = 	
+    if model_name == 'svm_kernel':
+        clf = svm.SVC(kernel='rbf')
+        clf.fit(X_train, Y_train)
+        return clf
 
-	elif model_name == 'logisticR':
-		svr = 	
+    elif model_name == 'svm_linear':
+        if sparse_bool:
+            clf = svm.LinearSVC(penalty='l1', dual=False)
+        else:
+            clf = svm.LinearSVC(penalty='l2')
 
-	else:
+        clf.fit(X_train, Y_train)
+        return clf
+
+    elif model_name == 'logisticR':
+        if sparse_bool:
+            clf = linear_model.LogisticRegression(penalty='l1')
+
+        else:
+            clf = linear_model.LogisticRegression(penalty='l2')
+
+        clf.fit(X_train, Y_train)
+
+        return clf
+
+    else:
 		print 'no existing model!!'
-		
-	
-	return svr
+
+    return None
 
 def main():
-	
+
 	#command: python main.py heart svm_linear sparce
 	data_name = sys.argv[1] # heart or gisette
 	model_name = sys.argv[2] # svm_linear or logisticR or svm_kernel
 	sparse_bool = sys.argv[3] # sparse or not
 
 	X_train, Y_train, X_val, Y_val, X_test, Y_test = data_split(data_name, sparse_bool)
-	
+
 	start_time = time.time()
-	svr = model_train(X_train, Y_train, model_name)
+	svr = model_train(X_train, Y_train, model_name, sparse_bool)
 	print("training time: %s seconds" % (time.time() - start_time))
-	
+
 	accuracy_train = model_test(X_train, Y_train, svr)
 	accuracy_val = model_test(X_val, Y_val, svr)
 	accuracy_test = model_test(X_test, Y_test, svr)
