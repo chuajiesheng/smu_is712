@@ -1,6 +1,5 @@
 function loss = analytical_test(X, Y, weights, bias)
-
-    predict = X * weights + bias;
-    loss = mean((predict - Y).^2 / 2);
-
+  output = X * weights + bias;
+  loss_minus = output - Y;
+  loss = mean( loss_minus.^2 ) / 2;
 end
