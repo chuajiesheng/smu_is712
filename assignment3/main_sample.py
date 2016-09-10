@@ -104,12 +104,10 @@ def model_train(X_train, Y_train, model_name, sparse_bool):
     elif model_name == 'logisticR':
         if sparse_bool:
             clf = linear_model.LogisticRegression(penalty='l1')
-
         else:
             clf = linear_model.LogisticRegression(penalty='l2')
 
         clf.fit(X_train, Y_train)
-
         return clf
 
     else:
