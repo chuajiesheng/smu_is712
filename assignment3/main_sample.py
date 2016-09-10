@@ -116,6 +116,27 @@ def model_train(X_train, Y_train, model_name, sparse_bool):
     return None
 
 
+def evaluate_C(X_train, Y_train, X_test, Y_test):
+    print "C,rbf_svm,l1_svm,l2_svm,l1_lr,l2_lr"
+    for i, C in enumerate((1000, 100, 10, 1, 0.1, 0.01, 0.001)):
+        # turn down tolerance for short training time
+
+        clf_K_SVM = svm.SVC(C=C, kernel='rbf')
+        clf_l1_SVM = svm.LinearSVC(C=C, penalty='l1', dual=False)
+        clf_l2_SVM = svm.LinearSVC(C=C, penalty='l2')
+
+        clf_l1_LR = linear_model.LogisticRegression(C=C, penalty='l1', tol=0.01)
+        clf_l2_LR = linear_model.LogisticRegression(C=C, penalty='l2', tol=0.01)
+
+        clf_K_SVM.fit(X_train, Y_train)
+        clf_l1_SVM.fit(X_train, Y_train)
+        clf_l2_SVM.fit(X_train, Y_train)
+        clf_l1_LR.fit(X_train, Y_train)
+        clf_l2_LR.fit(X_train, Y_train)
+
+        print "%.3f,%.4f,%.4f,%.4f,%.4f,%.4f" % (C, clf_K_SVM.score(X_test, Y_test), clf_l1_SVM.score(X_test, Y_test), clf_l2_SVM.score(X_test, Y_test), clf_l1_LR.score(X_test, Y_test), clf_l2_LR.score(X_test, Y_test))
+
+
 def main():
     # command: python main.py heart svm_linear sparce
     data_name = sys.argv[1]  # heart or gisette
@@ -134,6 +155,8 @@ def main():
     print ("training data set accuracy:" + str(accuracy_train))
     print ("validiction data set accuracy:" + str(accuracy_val))
     print ("test data set accuracy:" + str(accuracy_test))
+
+    # evaluate_C(X_train, Y_train, X_test, Y_test)
 
 
 if __name__ == '__main__':
