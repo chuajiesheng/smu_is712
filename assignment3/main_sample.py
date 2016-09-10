@@ -54,7 +54,7 @@ def data_split(data_name, sparse_bool):
 		X = np.array(X) / 1000;
 		Y = importdata("../data/gisette_valid.labels")
 		Y = ( np.array(Y)[:,0] + 1) / 2
-		
+
 		val_num = np.floor(X.shape[0]/2);
 		X_val = X[0:val_num]
 		Y_val = Y[0:val_num]
@@ -62,12 +62,12 @@ def data_split(data_name, sparse_bool):
 		Y_test = Y[val_num:]
 	else:
 		print 'no existing data!!!'
-	
+
 	#Your code here
 	if sparse_bool == 'sparse':
-		X_train = 
-		X_val   = 
-		X_test  = 
+		X_train = sparse.csr_matrix(X_train)
+		X_val   = sparse.csr_matrix(X_val)
+		X_test  = sparse.csr_matrix(X_test)
 	return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 #Your code here
