@@ -72,9 +72,9 @@ def data_split(data_name, sparse_bool):
 
 #Your code here
 def model_test(X_test, Y_test, svr):
-	
-	accuracy = 
-	
+
+	accuracy = svr.score(X_test, Y_test)
+
 	return accuracy
 
 #Your code here
