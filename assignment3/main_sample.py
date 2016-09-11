@@ -134,7 +134,36 @@ def evaluate_C(X_train, Y_train, X_test, Y_test):
         clf_l1_LR.fit(X_train, Y_train)
         clf_l2_LR.fit(X_train, Y_train)
 
-        print "%.3f,%.4f,%.4f,%.4f,%.4f,%.4f" % (C, clf_K_SVM.score(X_test, Y_test), clf_l1_SVM.score(X_test, Y_test), clf_l2_SVM.score(X_test, Y_test), clf_l1_LR.score(X_test, Y_test), clf_l2_LR.score(X_test, Y_test))
+        print "%.3f,%.4f,%.4f,%.4f,%.4f,%.4f" % (C,
+                                                 clf_K_SVM.score(X_test, Y_test),
+                                                 clf_l1_SVM.score(X_test, Y_test),
+                                                 clf_l2_SVM.score(X_test, Y_test),
+                                                 clf_l1_LR.score(X_test, Y_test),
+                                                 clf_l2_LR.score(X_test, Y_test))
+
+
+def evaluate_kernel(X_train, Y_train, X_test, Y_test):
+    print "C,gamma,rbf_svm,poly_svm,sigmoid"
+
+    feature_size = X_train.shape[1]
+    for i, C in enumerate((1000, 100, 10, 1, 0.1, 0.01, 0.001)):
+        for j, divisor in enumerate((0.1, 0.2, 0.3, 0.4, 0.5, 1, 2, 3, 4, 5)):
+            gamma = 1 / (divisor * feature_size)
+
+            clf_rbf_SVM = svm.SVC(C=C, kernel='rbf', gamma=gamma)
+            clf_poly_SVM = svm.SVC(C=C, kernel='poly', gamma=gamma)
+            clf_sigmod_SVM = svm.SVC(C=C, kernel='sigmoid', gamma=gamma)
+
+            clf_rbf_SVM.fit(X_train, Y_train)
+            clf_poly_SVM.fit(X_train, Y_train)
+            clf_sigmod_SVM.fit(X_train, Y_train)
+
+            print "%.3f,%.4f,%.4f,%.4f,%.4f" % (
+                C,
+                gamma,
+                clf_rbf_SVM.score(X_test, Y_test),
+                clf_poly_SVM.score(X_test, Y_test),
+                clf_sigmod_SVM.score(X_test, Y_test))
 
 
 def main():
@@ -157,7 +186,7 @@ def main():
     print ("test data set accuracy:" + str(accuracy_test))
 
     # evaluate_C(X_train, Y_train, X_test, Y_test)
-
+    # evaluate_kernel(X_train, Y_train, X_test, Y_test)
 
 if __name__ == '__main__':
     main()
