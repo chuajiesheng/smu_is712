@@ -3,6 +3,7 @@ from sklearn import svm
 from sklearn import linear_model
 from sklearn import naive_bayes
 from sklearn import ensemble
+from sklearn import cross_validation
 import random
 import sys
 from scipy import sparse
@@ -88,22 +89,31 @@ def model_train(X_train, Y_train, model_name, para_c=1, para_g=0):
     return svr
 
 
-def model_training(X_train, Y_train, model_name):
+def model_training(X, Y, model_name):
     '''
     Your code here for model selection / hyperparameter selection
     Return the model with the best hyper-parameter (e.g., k-fold Cross validation)
     '''
-    # svr = model_train(X_train, Y_train, model_name)
+    Cs = [0.01, 0.1, 1, 10, 100, 1000]
+    Gs = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
 
-    return svr
+    X_train, X_test, Y_train, Y_test = cross_validation.train_test_split(X, Y, test_size=0.25, random_state=42)
+
+    best_svr = None
+    best_accuracy = 0
+
+    for c, g in [(x, y) for x in Cs for y in Gs]:
+        svr = model_train(X_train, Y_train, model_name, para_c=c, para_g=g)
+        accuracy = model_test(X_test, Y_test, svr)
+        print "%s, %f, %f, %f" % (model_name, c, g, accuracy)
+
+        if accuracy > best_accuracy:
+            best_svr = svr
+
+    return best_svr
 
 
 def main():
-    # command: python main.py heart svm_linear sparce
-    data_name = sys.argv[1]  # heart or gisette
-    model_name = sys.argv[2]  # svm_linear or logisticR or svm_kernel
-    sparse_bool = sys.argv[3]  # sparse or not
-
     X_train, Y_train, X_test, Y_test = data_split(data_name, sparse_bool)
 
     start_time = time.time()
