@@ -138,4 +138,18 @@ if __name__ == '__main__':
     model_name = sys.argv[2]  # svm_linear or logisticR or svm_kernel
     sparse_bool = sys.argv[3]  # sparse or not
 
-    main(data_name, model_name, sparse_bool)
+    if model_name == 'all':
+        # command: python main.py all all all
+        datasets = ['a7a', 'gisette']
+        models = ['svm_kernel', 'svm_linear', 'logisticR', 'gaussian', 'ada']
+        sparsity = ['sparse', 'not_sparse']
+
+        for data_name, model_name, sparse_bool in [(d, m, s) for d in datasets for m in models for s in sparsity]:
+            if model_name == 'gaussian' and sparse_bool == 'sparse':
+                continue
+
+            print '# Running %s with %s (%s)' % (data_name, model_name, sparse_bool)
+            main(data_name, model_name, sparse_bool)
+
+    else:
+        main(data_name, model_name, sparse_bool)
