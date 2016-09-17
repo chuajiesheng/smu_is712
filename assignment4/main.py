@@ -1,6 +1,8 @@
 import numpy as np
 from sklearn import svm
 from sklearn import linear_model
+from sklearn import naive_bayes
+from sklearn import ensemble
 import random
 import sys
 from scipy import sparse
@@ -70,13 +72,14 @@ def model_test(X_test, Y_test, svr):
 def model_train(X_train, Y_train, model_name, para_c=1, para_g=0):
     if model_name == 'svm_kernel':
         svr = svm.SVC(C=para_c, gamma=para_g, kernel='rbf')
-
     elif model_name == 'svm_linear':
         svr = svm.LinearSVC(C=para_c, penalty='l2')
-
     elif model_name == 'logisticR':
         svr = linear_model.LogisticRegression(C=para_c, penalty='l2')
-
+    elif model_name == 'gaussian':
+        svr = naive_bayes.GaussianNB()
+    elif model_name == 'ada':
+        svr = ensemble.AdaBoostClassifier()
     else:
         print ('no existing model!!')
 
