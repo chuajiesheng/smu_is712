@@ -113,7 +113,7 @@ def model_training(X, Y, model_name):
     return best_svr
 
 
-def main():
+def main(data_name, model_name, sparse_bool):
     X_train, Y_train, X_test, Y_test = data_split(data_name, sparse_bool)
 
     start_time = time.time()
@@ -127,4 +127,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # command: python main.py heart svm_linear sparce
+    data_name = sys.argv[1]  # heart or gisette
+    model_name = sys.argv[2]  # svm_linear or logisticR or svm_kernel
+    sparse_bool = sys.argv[3]  # sparse or not
+
+    main(data_name, model_name, sparse_bool)
