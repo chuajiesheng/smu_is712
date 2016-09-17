@@ -94,8 +94,14 @@ def model_training(X, Y, model_name):
     Your code here for model selection / hyperparameter selection
     Return the model with the best hyper-parameter (e.g., k-fold Cross validation)
     '''
-    Cs = [0.01, 0.1, 1, 10, 100, 1000]
-    Gs = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
+
+    Cs = [0.01, 0.1, 1, 10, 100]
+    Gs = [0.001, 0.01, 0.1, 1, 10, 100]
+
+    if model_name == 'gaussian' or model_name == 'ada':
+        return model_train(X, Y, model_name)
+    elif model_name == 'svm_linear' or model_name == 'logisticR':
+        Gs = [1]
 
     X_train, X_test, Y_train, Y_test = cross_validation.train_test_split(X, Y, test_size=0.25, random_state=42)
 
