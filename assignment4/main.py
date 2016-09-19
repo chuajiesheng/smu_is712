@@ -103,14 +103,18 @@ def model_training(X, Y, model_name):
     elif model_name == 'svm_linear' or model_name == 'logisticR':
         Gs = [1]
 
-    X_train, X_test, Y_train, Y_test = cross_validation.train_test_split(X, Y, test_size=0.25, random_state=42)
-
     best_svr = None
     best_accuracy = 0
+    k = 4
 
     for c, g in [(x, y) for x in Cs for y in Gs]:
-        svr = model_train(X_train, Y_train, model_name, para_c=c, para_g=g)
-        accuracy = model_test(X_test, Y_test, svr)
+        total_scores = 0
+
+        for train, test in cross_validation.KFold(X.shape[0], n_folds=k):
+            svr = model_train(X[train], Y[train], model_name, para_c=c, para_g=g)
+            total_scores += model_test(X[test], Y[test], svr)
+
+        accuracy = total_scores / k
         print "%s, %f, %f, %f" % (model_name, c, g, accuracy)
 
         if accuracy > best_accuracy:
