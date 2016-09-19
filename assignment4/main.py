@@ -70,7 +70,7 @@ def model_test(X_test, Y_test, svr):
 
 
 # You may add more models here
-def model_train(X_train, Y_train, model_name, para_c=1, para_g=0):
+def model_train(X_train, Y_train, model_name, para_c=1, para_g=1):
     if model_name == 'svm_kernel':
         svr = svm.SVC(C=para_c, gamma=para_g, kernel='rbf')
     elif model_name == 'svm_linear':
