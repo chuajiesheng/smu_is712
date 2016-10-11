@@ -26,22 +26,33 @@ def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
                           strides=[1, 2, 2, 1], padding='SAME')
 
-
-W_conv1 = weight_variable([5, 5, 1, 32])
+# output =  width x height x channels x number of filters
+W_conv1 = weight_variable([5, 5, 1, 32]) # 5x5 filter, 1x input channel, 32x output channel
 b_conv1 = bias_variable([32])
-x_image = tf.reshape(x, [-1, 28, 28, 1])
-h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
-h_pool1 = max_pool_2x2(h_conv1)
+x_image = tf.reshape(x, [-1, 28, 28, 1]) # 28x28 image, 1x channel
+h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1) # 28x28 image, 32x channel, 1 filter
+print(h_conv1)
+h_pool1 = max_pool_2x2(h_conv1) # image become 14x14 image, 32x channel
+print(h_pool1)
 
-W_conv2 = weight_variable([5, 5, 32, 64])
+W_conv2 = weight_variable([5, 5, 32, 64]) # 5x5 filter, 32x input channel, 64x output channel
 b_conv2 = bias_variable([64])
-h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
-h_pool2 = max_pool_2x2(h_conv2)
+h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2) # image become 14x14 image, 64x output chanel
+print(h_conv2)
+h_pool2 = max_pool_2x2(h_conv2) # image become 7x7, 64x output channel
+print(h_pool2)
 
-W_fc1 = weight_variable([7 * 7 * 64, 1024])
+W_conv3 = weight_variable([5, 5, 64, 128])
+b_conv3 = bias_variable([128])
+h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
+print(h_conv3)
+h_pool3 = max_pool_2x2(h_conv3) # image become 4x4, 128x output channel
+print(h_pool3)
+
+W_fc1 = weight_variable([4 * 4 * 128, 1024])
 b_fc1 = bias_variable([1024])
-h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
-h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+h_pool3_flat = tf.reshape(h_pool3, [-1, 4 * 4 * 128])
+h_fc1 = tf.nn.relu(tf.matmul(h_pool3_flat, W_fc1) + b_fc1)
 
 keep_prob = tf.placeholder(tf.float32)
 h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
